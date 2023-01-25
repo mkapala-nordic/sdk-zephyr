@@ -68,3 +68,12 @@ config DOMAIN_CPUAPP_BOARD
 	  another board.
 
 endif # BOARD_THINGY53_NRF5340_CPUNET
+
+config BOARD_OTA_DFU_THROUGHPUT_IMPROVEMENT
+	bool "OTA DFU throughput improvement"
+	depends on BT
+	# depends on BOARD_ENABLE_MCUMGR_BT_OTA_DFU
+	default y
+	help
+	  This option sets larger Bluetooth buffer sizes for Application and
+	  Network cores to improve throughput of OTA DFU.
