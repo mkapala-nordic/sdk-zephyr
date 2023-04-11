@@ -203,8 +203,23 @@ Boards & SoC Support
 Build system and infrastructure
 *******************************
 
-* Fixed an issue whereby whereby older versions of the Zephyr SDK toolchain
-  were used instead of the latest compatible version.
+* Fixed an issue whereby older versions of the Zephyr SDK toolchain were used
+  instead of the latest compatible version.
+
+* Fixed an issue whereby building an application with sysbuild and specifying
+  mcuboot's verification to be checksum only did not build a bootable image.
+
+* Fixed an issue whereby if no prj.conf file was present then board
+  configuration files would not be included by emitting a fatal error. As a
+  result, prj.conf files are now mandatory in projects.
+
+* Introduced support for extending/replacing the signing mechanism in zephyr,
+  see :ref:`West extending signing <west-extending-signing>` for further
+  details.
+
+* west sign now checks for additional Kconfig options allowing it to properly
+  validate device tree configuration against selected MCUboot mode of operation
+  (boot algorithm), before signing application with that mode in mind.
 
 Drivers and Sensors
 *******************
@@ -324,6 +339,25 @@ HALs
 
 MCUboot
 *******
+
+* Added :kconfig:option:`CONFIG_MCUBOOT_CMAKE_WEST_SIGN_PARAMS` that allows to pass arguments to
+  west sign when invoked from cmake.
+
+* Added :kconfig:option:`CONFIG_MCUBOOT_BOOTLOADER_USES_SWAP` and :kconfig:option:`CONFIG_MCUBOOT_BOOTLOADER_USES_SINGLEA`
+  that allow to indicate whether application will be built for MCUboot configured for MCUboot with
+  swap-move algorithm or for single application slot. Previously lack of secondary slot was used
+  to detect type of built, and this is left as is to remain compatible with previous behaviour.
+
+* Added :kconfig:option:`CONFIG_MCUBOOT_BOOTLOADER_USES_SWAP_SCRATCH` that should be selected when
+  application is built for MCUboot configured for swap-scratch algorithm.
+
+* Added :kconfig:option:`CONFIG_MCUBOOT_BOOTLOADER_USES_DIRECT_XIP` that should be selected when
+  application is built for MCUboot configured for DirectXIP.
+
+* Added :kconfig:option:`CONFIG_MCUBOOT_IMGTOOL_ENCODE_SLOT_ADDRESS` that makes imgtool encode
+  slot offset application has been built for. MCUmgr can use that offset to reject application
+  that would not boot, because it has been built for different slot then the one MCUboot will
+  try to boot it from.
 
 Storage
 *******
