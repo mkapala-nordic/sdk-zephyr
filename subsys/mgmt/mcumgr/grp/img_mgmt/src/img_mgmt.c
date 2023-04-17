@@ -34,6 +34,7 @@
 #include <zephyr/mgmt/mcumgr/mgmt/callbacks.h>
 #endif
 
+#if !USE_PARTITION_MANAGER
 #define FIXED_PARTITION_IS_CHOSEN_CODE_PARTITION(label)	\
 	DT_SAME_NODE(DT_NODELABEL(label), DT_CHOSEN(zephyr_code_partition))
 
@@ -43,6 +44,18 @@
 #define IMG_MGMT_BOOT_CURR_SLOT 1
 #else
 #error Active partition other than slot0_partition or slot1_partition is not supported yet.
+#endif
+
+#else
+#include "pm_config.h"
+
+#if (PM_ADDRESS == PM_MCUBOOT_PRIMARY_APP_ADDRESS)
+#define IMG_MGMT_BOOT_CURR_SLOT 0
+#elif (PM_ADDRESS == PM_MCUBOOT_SECONDARY_APP_ADDRESS)
+#define IMG_MGMT_BOOT_CURR_SLOT 1
+#else
+#error Active partition other than PM_MCUBOOT_PRIMARY_APP_ADDRESS or PM_MCUBOOT_SECONDARY_APP_ADDRESS is not supported yet.
+#endif
 #endif
 
 LOG_MODULE_REGISTER(mcumgr_img_grp, CONFIG_MCUMGR_GRP_IMG_LOG_LEVEL);
