@@ -1,0 +1,7 @@
+// Used in Zephyr
+
+/ {
+	chosen {
+		zephyr,code-partition = &slot1_partition;
+	};
+};
