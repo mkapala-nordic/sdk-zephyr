@@ -1080,6 +1080,23 @@ void bt_conn_cb_register(struct bt_conn_cb *cb);
  */
 void bt_set_bondable(bool enable);
 
+/** @brief Overlay the bonding flag for a given connection.
+ *
+ *  Set/clear the Bonding flag in the Authentication Requirements of
+ *  SMP Pairing Request/Response data for a given connection.
+ *
+ *  The bonding flag for a given connection cannot be overlaid if
+ *  security procedures in the SMP module have already started. This function
+ *  can be called only once per connection.
+ *
+ *  If the bonding flag is not overlaid, the value will depend on
+ *  BT_BONDABLE Kconfig setting.
+ *
+ *  @param conn Connection object.
+ *  @param enable Value allowing/disallowing to be bondable.
+ */
+int bt_bondable_overlay(struct bt_conn *conn, bool enable);
+
 /** @brief Allow/disallow remote LE SC OOB data to be used for pairing.
  *
  *  Set/clear the OOB data flag for LE SC SMP Pairing Request/Response data.
